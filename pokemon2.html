@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <style>
+        #box-container{
+            display: flex;
+            width: 120px;
+            height: 200px;
+            text-align: center;
+        }
+
+        * {
+                box-sizing: border-box;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+                border: 10px;
+            }
+            .mon-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: space-between;
+                justify-content: center;
+                max-width: 100%; 
+            }
+            .pokemon {
+                margin: 10px;
+                padding-bottom: 20px;
+                text-align: center;
+            }
+
+            .btn{
+                width: 80px;
+            }
+            .img-container {
+                width: 100px;
+                height: 108px;
+                text-align: center;
+                padding-top: 5px;   
+            }
+
+            .number {
+                font-size: 13px;
+                padding-top: 20px;
+            }
+
+            .type {
+                margin: 5px;
+                font-size: 15px;
+            }
+        
+        .info{
+            margin-top: -20px;
+        }
+        </style>
+</head>
+
+<body>
+
+    <button type="button" class="btn btn-primary"  onclick="getRun()">Get!</button>
+    <div class="coloumns">
+        <div id="poke_box" class="mon-container"></div>            
+    </div>
+    </div>
+
+    <script>
+const colorRandom = {
+                bug: "#4086f4",dragon: "#8f0000", electric: "#ff0000",fire: "#ff0000",grass: "#9ACD32",
+                ground: "#EFB549",normal: "#f5f5db",poison: "#CF9FFF",
+                water: "#4086f4",
+            };
+            const main_types = Object.keys(colorRandom);
+
+        const getRun = async () => {
+            for (let i = 1; i <= 30; i++) {
+                    await getPokemon(i);
+                }
+                
+        };
+        const getPokemon = async id => {
+                const url = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                const pokemon = await url.json();
+                console.log(url)
+                showingPokemon(pokemon);
+                
+            };
+            function showingPokemon(json) {
+                const pokehex = document.createElement('div');
+                pokehex.classList.add('pokemon');
+
+                const type = json.types[0].type.name;
+                const name = json.name;
+            
+                const color = colorRandom[type];
+                const imgsrc = json.sprites.front_default; 
+             
+                pokehex.style.backgroundColor = color;
+                const pokeInnerHTML = `
+                    <div id="box-container">
+                    <div class="container">
+                    <p class="number">${json.id}: ${name}</p>
+                    <div class="img-container">
+                        <img src="${imgsrc}" alt="${name}" />
+                    </div>
+                    <div class="info">
+                        <p class="type">type: ${type}</p>
+                    </div>
+                    </div>
+                    </div>
+                `
+
+                pokehex.innerHTML = pokeInnerHTML;
+                
+
+                poke_box.appendChild(pokehex);
+            }
+    
+    </script>
+    
+</body>
+</html> 
